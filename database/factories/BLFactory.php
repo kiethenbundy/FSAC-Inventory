@@ -17,7 +17,10 @@ class BLFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'bl' => fake()->sentence(),
+            'Boncomm' => fake()->realText(),
+            'MouvementStock' => fake()->randomElement(['sortie']),
+            'dateLivraison' => fake()->dateTimeBetween('now', '+1 year'),
         ];
     }
 }

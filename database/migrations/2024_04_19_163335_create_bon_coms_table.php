@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('b_l_s', function (Blueprint $table) {
+        Schema::create('bon_coms', function (Blueprint $table) {
             $table->id();
-            $table->string('bl');
-            $table->foreignId('BonCom')->constrained('BonCom');
-            $table->foreignId('MouvementStock')->constrained('MouvementStock');
-            $table->timestamp('dateLivraison');
             $table->timestamps();
         });
     }
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('b_l_s');
+        Schema::dropIfExists('bon_coms');
     }
 };
