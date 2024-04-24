@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -22,15 +24,36 @@ use app\Http\Controllers\MouvementStockController;
 Route::redirect('/', '/dashboard', 301);
 
 
+Route::middleware(['auth','verified','admin'])->prefix('/admin')->namespace('App\Http\Controllers\Admin')->group(function(){
+
+
+    Route::group(['middleware' => ['admin']] , function () {
+
+       Route::get('dashboard',[AdminController::class,'index']);
+    
+        
+       Route::resource('mouvementstock', MouvementStockController::class);
+       
+       Route::get('/article/mesArticles', [ArticleController::class, 'mesArticles'])
+          ->name('article.mesArticles');
+       
+       Route::resource('article', ArticleController::class);
+       
+       Route::resource('user', UserController::class);   
+       
+       Route::resource('fournisseurs', FournisseursController::class);
+       
+       Route::resource('BL', BLController::class);
+       
+       Route::resource('BonCom', BonComController::class);
+    });
+});
+
 Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/dashboard', fn () => Inertia::render('Dashboard')) 
         ->name('dashboard');
      
-    Route::resource('user', UserController::class);    
-    Route::resource('fournisseurs', FournisseursController::class);
-    Route::resource('BL', BLController::class);
-    Route::resource('BonCom', BonComController::class);
-    Route::resource('MouvementStock', MouvementStockController::class);
+
 });
 
 Route::middleware('auth')->group(function () {

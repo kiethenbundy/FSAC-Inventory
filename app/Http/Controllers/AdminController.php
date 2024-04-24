@@ -2,28 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Models\Admin;
+use App\Http\Requests\StoreAdminRequest;
+use App\Http\Requests\UpdateAdminRequest;
 use App\Http\Resources\UserCrudResource;
+use App\Models\User;
 
-class UserController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
         $query = User::query();
 
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
 
-        if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
-        }
-        if (request("email")) {
-            $query->where("email", "like", "%" . request("email") . "%");
+        if (request("usertype") == 'admin') {
+            $query->where("usertype", "like", "%" . request("usertype") . "%");
+
+            if (request("name")) {
+                $query->where("name", "like", "%" . request("name") . "%");
+            }
+            if (request("email")) {
+                $query->where("email", "like", "%" . request("email") . "%");
+            }
         }
 
         $users = $query->orderBy($sortField, $sortDirection)
@@ -42,39 +48,46 @@ class UserController extends Controller
      */
     public function create()
     {
-        return inertia("User/Creer");
+        return inertia("Admin/Creer");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreAdminRequest $request)
     {
-       //
+        $data = $request->validated();
+        $data['email_verified_at'] = time();
+        $data['password'] = bcrypt($data['password']);
+        $data ['usertype'] = 'admin';
+        User::create($data);
+
+        return to_route('admin.index')
+            ->with('success', 'Admin was created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Admin $admin)
     {
-       //
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Admin $admin)
     {
-        return inertia('User/Modifier', [
-            'user' => new UserCrudResource($user),
+        return inertia('Admin/Modifier', [
+            'user' => new UserCrudResource($admin),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateAdminRequest $request, User $user)
     {
         $data = $request->validated();
         $password = $data['password'] ?? null;
@@ -85,8 +98,8 @@ class UserController extends Controller
         }
         $user->update($data);
 
-        return to_route('user.index')
-            ->with('success', "User \"$user->name\" was updated");
+        return to_route('admin.index')
+            ->with('success', "Admin\"$user->name\" was updated");
     }
 
     /**
@@ -96,7 +109,7 @@ class UserController extends Controller
     {
         $name = $user->name;
         $user->delete();
-        return to_route('user.index')
+        return to_route('admin.index')
             ->with('success', "User \"$name\" was deleted");
     }
 }

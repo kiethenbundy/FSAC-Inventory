@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => time()
         ]);
 
-        Fournisseurs::factory()->count(30)
+        /*Fournisseurs::factory()->count(30)
         ->hasBL(30)
-        ->create();
+        ->create();*/
     }
 }

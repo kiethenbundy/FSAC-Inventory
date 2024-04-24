@@ -33,7 +33,27 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = $request->user()->usertype;
+
+        switch($user){
+          case 'admin':
+            return redirect('/dashboard/admin');
+            break;
+        case 'chefservice':
+            return redirect('/chefservice/dashboard');
+            break;
+        case 'chefdept':
+            return redirect('/chefdept/dashboard');
+            break;
+        case 'magasinier':
+            return redirect('/magasinier/dashboard');
+            break;
+        default:
+            Auth::logout();
+            return redirect('/login');
+        }
+
+        return redirect()->intended(route('dashboard'));
     }
 
     /**

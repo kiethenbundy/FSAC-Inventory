@@ -15,7 +15,7 @@ class FournisseursController extends Controller
     public function index()
     {
         $query = Fournisseurs::query();
-        $fournisseurs = $query->paginate(10)->onEachSide(1);
+        $fournisseurs = $query->paginate(10);
         return inertia("Fournisseurs/Index",[
             "fournisseurs" => FournisseursResource::collection($fournisseurs),
         ]);
