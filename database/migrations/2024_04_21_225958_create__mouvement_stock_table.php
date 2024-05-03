@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('type');
             $table->string('quantite');
-            $table->timestamp('date_mouvementstock');
+            $table->timestamp('date');
             $table->string('reference');
             $table->integer('total');
-            $table->foreignId('article_mouvementstok')->constrained('article');
+            $table->foreignId('article_mouvementstok')->constrained('article_mouvementstock');
             $table->foreignId('fournit')->constrained('fournisseurs');
             $table->foreignId('destination')->constrained('destination');
+            $table->foreignId('bl')->constrained('bon_livraison');
+            $table->foreignId('bon_sortie')->constrained('bon_sortie');
+            $table->foreignId('user')->constrained('users');
             $table->timestamps();
         });
     }

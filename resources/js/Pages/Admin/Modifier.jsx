@@ -10,6 +10,7 @@ export default function Create({ auth, user }) {
   const { data, setData, post, errors, reset } = useForm({
     name: user.name || "",
     email: user.email || "",
+    usertype: user.usertype || "",
     password: "",
     password_confirmation: "",
     _method: "PUT",
@@ -18,7 +19,7 @@ export default function Create({ auth, user }) {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    post(route("user.update", user.id));
+    post(route("admin.update", user.id));
   };
 
   return (
@@ -69,6 +70,25 @@ export default function Create({ auth, user }) {
                 />
 
                 <InputError message={errors.email} className="mt-2" />
+              </div>
+
+              <div className="mt-4">
+                <InputLabel htmlFor="usertype" value="MouvementStock Status" />
+
+                <SelectInput
+                  name="usertype"
+                  id="user_type"
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("usertype", e.target.value)}
+                >
+                  <option value="">Select Type</option>
+                  <option value="pending">Admin</option>
+                  <option value="in_progress">Chef de Service</option>
+                  <option value="completed">Chef de Departement</option>
+                  <option value="completed">Magasinier</option>
+                </SelectInput>
+
+                <InputError message={errors.usertype} className="mt-2" />
               </div>
 
               <div className="mt-4">

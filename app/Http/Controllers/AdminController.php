@@ -6,7 +6,9 @@ use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Http\Resources\UserCrudResource;
+use App\Models\Article;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -21,8 +23,6 @@ class AdminController extends Controller
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
 
-        if (request("usertype") == 'admin') {
-            $query->where("usertype", "like", "%" . request("usertype") . "%");
 
             if (request("name")) {
                 $query->where("name", "like", "%" . request("name") . "%");
@@ -30,7 +30,7 @@ class AdminController extends Controller
             if (request("email")) {
                 $query->where("email", "like", "%" . request("email") . "%");
             }
-        }
+        
 
         $users = $query->orderBy($sortField, $sortDirection)
             ->paginate(10)
@@ -59,7 +59,6 @@ class AdminController extends Controller
         $data = $request->validated();
         $data['email_verified_at'] = time();
         $data['password'] = bcrypt($data['password']);
-        $data ['usertype'] = 'admin';
         User::create($data);
 
         return to_route('admin.index')
@@ -111,5 +110,25 @@ class AdminController extends Controller
         $user->delete();
         return to_route('admin.index')
             ->with('success', "User \"$name\" was deleted");
+    }
+    public function markasCompleted (Demande $demande) {
+
+        DB::transaction( function() use ($demande) {
+           $demande->status = 'completed';
+           $demande->save();
+
+           $articles = $demande->articles;
+
+           foreach( $articles as $article ){
+            $stock = Article::where('articles',$article->id)->first();
+            if($stock){
+                $stock->quantite -= $article->pivot->quantite;
+                $stock->save();
+            }
+           }
+        });
+
+        return to_route('demande.index')
+            ->with('success', "Demande terminee et stock mise a jour"); 
     }
 }

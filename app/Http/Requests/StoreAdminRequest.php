@@ -25,12 +25,12 @@ class StoreAdminRequest extends FormRequest
         return [
             "name" => ["required","string","max:255"],
             "email" => ["required","string","email","unique:users,email"],
+            "usertype" => ["required", "string", "max:255"],
             "password" => [
                 "required",
                 "confirmed",
                 Password::min(8)->letters()->symbols(),
             ],
-            "usertype" => ["required","string","max:255"],
         ];
     }
 }

@@ -8,6 +8,7 @@ export default function Create({ auth }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
     email: "",
+    usertype: "",
     password: "",
     password_confirmation: "",
   });
@@ -15,7 +16,7 @@ export default function Create({ auth }) {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    post(route("user.store"));
+    post(route("admin.store"));
   };
 
   return (
@@ -69,6 +70,25 @@ export default function Create({ auth }) {
               </div>
 
               <div className="mt-4">
+                <InputLabel htmlFor="usertype" value="User Type" />
+
+                <SelectInput
+                  name="usertype"
+                  id="user_type"
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData("usertype", e.target.value)}
+                >
+                  <option value="">Select Type</option>
+                  <option value="pending">Admin</option>
+                  <option value="in_progress">Chef de Service</option>
+                  <option value="completed">Chef de Departement</option>
+                  <option value="completed">Magasinier</option>
+                </SelectInput>
+
+                <InputError message={errors.usertype} className="mt-2" />
+              </div>
+
+              <div className="mt-4">
                 <InputLabel htmlFor="user_password" value="Password" />
 
                 <TextInput
@@ -108,7 +128,7 @@ export default function Create({ auth }) {
 
               <div className="mt-4 text-right">
                 <Link
-                  href={route("user.index")}
+                  href={route("admin.index")}
                   className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
                 >
                   Cancel

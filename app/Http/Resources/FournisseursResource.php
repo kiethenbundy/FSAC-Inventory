@@ -17,10 +17,13 @@ class FournisseursResource extends JsonResource
     {
         return [
             'id' => $this->id(),
-            'nom' => $this->nom,
+            'name' => $this->name,
             'coordonnees' => $this->coordonnees,
             'num' => $this->num,
             'email' => $this->email,
+            'marche' => new MarcheResource($this->marche),
+            'bon_livraison' => new BLResource($this->bon_livraison),
+            'livraison' => new LivraisonResource($this->livraison),
             'date_creation' => (new Carbon($this->date_creation))->format('d-m-Y'),
         ];
     }

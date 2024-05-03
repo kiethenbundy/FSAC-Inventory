@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use app\Http\Controllers\FournisseursController;
 use app\Http\Controllers\BLController;
 use app\Http\Controllers\BonComController;
+use App\Http\Controllers\MarcheController;
 use app\Http\Controllers\MouvementStockController;
 
 /*Route::get('/', function () {
@@ -45,7 +46,7 @@ Route::middleware(['auth','verified','admin'])->prefix('/admin')->namespace('App
        
        Route::resource('BL', BLController::class);
        
-       Route::resource('BonCom', BonComController::class);
+       Route::resource('Marche', MarcheController::class);
     });
 });
 

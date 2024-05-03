@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreignId('garantie')->constrained('garantie');
             $table->foreignId('codebarre')->constrained('codebarre');
             $table->foreignId('mouvementstock')->constrained('mouvementstock');
+            $table->foreignId('marche')->constrained('marche');
+            $table->foreignId('demande_article')->constrained('demande_article');
             $table->timestamps();
         });
     }

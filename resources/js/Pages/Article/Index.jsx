@@ -1,10 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 import { Head, Link } from "@inertiajs/react";
+import TableArticle from "./TableArticle";
 
-import TasksTable from "./TasksTable";
-
-export default function Index({ auth, success, tasks, queryParams = null }) {
+export default function Index({ auth, success, articles, queryParams = null }) {
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -28,10 +27,10 @@ export default function Index({ auth, success, tasks, queryParams = null }) {
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
-              <TasksTable
-                tasks={tasks}
-                queryParams={queryParams}
+              <TableArticle
+                articles={articles}
                 success={success}
+                queryParams = {queryParams}
               />
             </div>
           </div>

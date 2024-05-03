@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('bon_sorties', function (Blueprint $table) {
             $table->id();
+            $table->string('num_inventaire');
+            $table->string('num_lot');
+            $table->integer('quantite');
+            $table->foreignId('destination')->constrained('destination');
             $table->timestamps();
         });
     }

@@ -1,8 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { USER_STATUS_CLASS_MAP, USER_STATUS_TEXT_MAP } from "@/constants.jsx";
-import ArticleTable from "../Article/TableArticle";
-export default function Show({ auth, user, articles, queryParams }) {
+import MouvementStockTable from "../MouvementStock/MouvementStockTable";
+export default function Show({ auth, user, mouvementstocks, queryParams }) {
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -39,26 +38,6 @@ export default function Show({ auth, user, articles, queryParams }) {
                     <label className="font-bold text-lg">User Email</label>
                     <p className="mt-1">{user.email}</p>
                   </div>
-                  <div className="mt-4">
-                    <label className="font-bold text-lg">User Type</label>
-                    <p className="mt-1">
-                      <span
-                        className={
-                          "px-2 py-1 rounded text-white " +
-                          USER_STATUS_CLASS_MAP[user.usertype]
-                        }
-                      >
-                        {USER_STATUS_TEXT_MAP[user.usertype]}
-                      </span>
-                    </p>
-                  </div>
-                  <div className="mt-4">
-                    <label className="font-bold text-lg">Created By</label>
-                    <p className="mt-1">{user.createdBy.name}</p>
-                  </div>
-                </div>
-                <div>
-                  
                 </div>
               </div>
 
@@ -75,8 +54,8 @@ export default function Show({ auth, user, articles, queryParams }) {
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
-              <ArticleTable
-                articles={articles}
+              <MouvementStockTable
+                mouvementstocks={mouvementstocks}
                 queryParams={queryParams}
                 hideUserColumn={true}
               />

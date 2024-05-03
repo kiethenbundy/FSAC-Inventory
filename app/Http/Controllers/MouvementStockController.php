@@ -81,9 +81,9 @@ class MouvementStockController extends Controller
         $articles = $query->orderBy($sortField, $sortDirection)
             ->paginate(10)
             ->onEachSide(1);
-        return inertia('MouvementStock/Show', [
+        return inertia('MouvementStock/Afficher', [
             'mouvementstock' => new MouvementStockResource($mouvementstock),
-            "articles$articles" => ArticleResource::collection($articles),
+            "articles" => ArticleResource::collection($articles),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
         ]);

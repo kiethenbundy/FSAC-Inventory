@@ -51,7 +51,7 @@ class ArticleController extends Controller
     public function create()
     {
         $mouvementstocks = MouvementStock::query()->orderBy('name', 'asc')->get();
-        $fournisseurs = User::query()->orderBy('name', 'asc')->get();
+        $fournisseurs = Fournisseurs::query()->orderBy('name', 'asc')->get();
 
         return inertia("Article/Create", [
             'mouvementstocks' => MouvementStockResource::collection($mouvementstocks),

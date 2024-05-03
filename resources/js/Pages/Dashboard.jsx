@@ -1,7 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import Row1 from './Row1';
+import Row2 from './Row2';
 
-export default function Dashboard({ auth, user }) {
+export default function Dashboard( { auth, plusgrand, encours, livre, nonlivre, mesmouvementstocks} ) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -10,16 +12,11 @@ export default function Dashboard({ auth, user }) {
             <Head title="Dashboard" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            { user.usertype === 'admin' && (
-                           
-                           <AdminDashboard /> 
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3 gap-2">
+                   
+                   <Row1 encours={encours} livre={livre} nonlivre={nonlivre} />
+                   <Row2 plusgrand={plusgrand} />
 
-                           )}
-                        </div>
-                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

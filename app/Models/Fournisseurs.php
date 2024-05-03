@@ -9,8 +9,29 @@ class Fournisseurs extends Model
 {
     use HasFactory;
 
-    public function  BL() {
+    protected $fillable = [
+        'name',
+        'coordonnees',
+        'num',
+        'email',
+        'marche',
+        'bon_livraison',
+        'livraison',
+        'date_creation',
+    ];
+
+    public function  bonlivraison() {
          return $this->hasMany( BL::class );
+    }
+
+    public function livraison()
+    {
+        return $this->belongsTo(Livraison::class);
+    }
+
+    public function marche()
+    {
+        return $this->belongsTo(BonCom::class);
     }
 
     
