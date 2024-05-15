@@ -12,8 +12,10 @@ use App\Http\Resources\UserResource;
 use App\Models\Fournisseurs;
 use App\Models\MouvementStock;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
 {
@@ -22,27 +24,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $query = Article::query();
+        $articles = Article::all();
 
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
-
-        if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
-        }
-        if (request("status")) {
-            $query->where("status", request("status"));
-        }
-
-        $articles = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
-            ->onEachSide(1);
-
-        return inertia("Article/Index", [
-            "articles" => ArticleResource::collection($articles),
-            'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-        ]);
+        return inertia("Article/Index2", compact('articles'));
     }
 
     /**
@@ -50,10 +34,10 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $mouvementstocks = MouvementStock::query()->orderBy('name', 'asc')->get();
+        $mouvementstocks = MouvementStock::query()->orderBy('type', 'asc')->get();
         $fournisseurs = Fournisseurs::query()->orderBy('name', 'asc')->get();
 
-        return inertia("Article/Create", [
+        return inertia("Article/Creer2", [
             'mouvementstocks' => MouvementStockResource::collection($mouvementstocks),
             'fournisseurs' => FournisseursResource::collection($fournisseurs),
         ]);
@@ -64,17 +48,21 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
+
+        dd($request->all());
+        
         $data = $request->validated();
-        /** @var $image \Illuminate\Http\UploadedFile */
-        $image = $data['image'] ?? null;
-        if ($image) {
-            $data['image_path'] = $image->store('article/' . Str::random(), 'public');
+
+        if( ! $data['prix'] ){
+
+            $data['prix']=0;
         }
         Article::create($data);
 
-        return to_route('article.index')
-            ->with('success', 'Article was created');
+        return to_route('/article')
+        ->with('success', 'Project was created');
     }
+
 
     /**
      * Display the specified resource.
@@ -91,7 +79,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        $mouvementstock = MouvementStock::query()->orderBy('name', 'asc')->get();
+        $mouvementstock = MouvementStock::query()->orderBy('type', 'asc')->get();
         $fournisseur = Fournisseurs::query()->orderBy('name', 'asc')->get();
 
         return inertia("Article/Modifier", [
@@ -136,8 +124,9 @@ class ArticleController extends Controller
 
     public function mesArticles()
     {
+        $mouvementstock = MouvementStock::query()->orderBy('name', 'asc')->get();
         $user = auth()->user();
-        $query = Article::query()->where('mouvementstock',$mouvementstock->id);
+        $query = Article::query()->where('mouvementstock', $mouvementstock->id);
 
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");

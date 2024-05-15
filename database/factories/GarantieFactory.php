@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BonCom>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Garantie>
  */
-class BonComFactory extends Factory
+class GarantieFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,8 @@ class BonComFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nbr_annee' => fake()->random_int(1,24),
+            'date_debut' => fake()->dateTimeBetween('now', '+1 year'),
         ];
     }
 }

@@ -52,7 +52,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
             Users
           </h2>
           <Link
-            href={route("user.create")}
+            href={route("/admin/user/create")}
             className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
           >
             Add new

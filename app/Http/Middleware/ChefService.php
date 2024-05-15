@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class ChefService
 {
     /**
@@ -31,7 +32,8 @@ class ChefService
             return redirect('/chefdept/dashboard');
         }
         if( $user->usertype === 'magasinier' ) {
-            return redirect('/magasinier/dashboard');
-        }
-    }
+         return redirect('/magasinier/dashboard');
+        }  
+        abort(403, 'Unauthorized action.');
+    }  
 }

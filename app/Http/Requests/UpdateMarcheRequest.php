@@ -12,7 +12,7 @@ class UpdateMarcheRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,12 +26,12 @@ class UpdateMarcheRequest extends FormRequest
             "name" => ["required","string","max:255"],
             "reference" => ["required","string"],
             'status' => ['required', Rule::in(['en_cours', 'non_livre', 'livre'])],
-            "num_lot" => ["required","integer"],
+            "num_lot" => ["integer"],
             "quantite" => ["required","integer"],
-            "date" => ["required","date"],
-            'destination' => ['required', 'exists:destination,id'],
-            'article' => ['required', 'exists:article,id'],
-            'mouvementstock' => ['required', 'exists:mouvementstock,id'],
+            "date" => ["date"],
+            'destination_id' => ['required',"exists:destination,id"],
+            'article_id' => ['required',"exists:articles,id"],
+            'mouvementstock_id' => ['required',"exists:mouvement_stock,id"],
         ];
     }
 }

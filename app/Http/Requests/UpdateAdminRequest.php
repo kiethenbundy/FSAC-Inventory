@@ -32,11 +32,12 @@ class UpdateAdminRequest extends FormRequest
                 "email",
                 Rule::unique('users')->ignore($user->id),
             ],
-            "password" => [
-                'nullable',
-                'confirmed',
-                Password::min(8)->letters()->symbols(),
-            ],
+            'password' => [
+                'required',
+                'string', 
+                'min:8', 
+                'regex:/^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]+$/'],
+                "destination"=> ["required","exists:destination,nom_dept"],
         ];
     }
 }

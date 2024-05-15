@@ -24,6 +24,7 @@
         "@emotion/styled": "^11.11.5",
         "@mui/icons-material": "^5.15.16",
         "@mui/material": "^5.15.16",
+        "@mui/x-data-grid": "^7.3.2",
         "@nivo/pie": "^0.86.0",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",

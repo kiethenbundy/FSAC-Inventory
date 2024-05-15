@@ -16,23 +16,24 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if( ! Auth::check() ){
+        if (!Auth::check()) {
             return redirect('/login');
         }
         $user = Auth::user();
 
-        if( $user->usertype === 'admin' ) {
+        if ($user->usertype === 'admin') {
             return $next($request);
         }
-        if( $user->usertype === 'chefservice' ) {
+        if ($user->usertype === 'chefservice') {
             return redirect('/chefservice/dashboard');
         }
-        if( $user->usertype === 'chefdept' ) {
+        if ($user->usertype === 'chefdept') {
             return redirect('/chefdept/dashboard');
         }
-        if( $user->usertype === 'magasinier' ) {
+        if ($user->usertype === 'magasinier') {
             return redirect('/magasinier/dashboard');
         }
-        
+        abort(403, 'Unauthorized action.');
     }
 }
+

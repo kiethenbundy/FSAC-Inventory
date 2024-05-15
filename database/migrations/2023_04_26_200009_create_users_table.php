@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->foreignId('destination')->constrained('destination');
+            $table->foreignId('destination')->constrained('destination')->default('0');
             $table->timestamps();
         });
 

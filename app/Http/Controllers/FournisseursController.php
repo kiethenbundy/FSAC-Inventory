@@ -36,7 +36,7 @@ class FournisseursController extends Controller
         ->paginate(10)
         ->onEachSide(1);
 
-        return inertia("Fournisseurs/Index",[
+        return inertia("Fournisseurs/Index2",[
             "fournisseurs" => FournisseursResource::collection($fournisseurs),
             'queryParams' => request()->query() ?: null,
         ]);
@@ -48,10 +48,10 @@ class FournisseursController extends Controller
     public function create()
     {
         $commande = Marche::query()->orderBy('reference', 'asc')->get();
-        $livraisons = Livraison::query()->orderBy('name', 'asc')->get();
+        $livraisons = Livraison::query()->orderBy('quantite', 'asc')->get();
         $bon_livraisons = BL::query()->orderBy('bl','asc')->get();
 
-        return inertia("Article/Create", [
+        return inertia("Fournisseurs/Creer2", [
             'marches' => MarcheResource::collection($commande),
             'livraisons' => LivraisonResource::collection($livraisons),
             'bon_livraisons' => BLResource::collection($bon_livraisons),
@@ -67,7 +67,7 @@ class FournisseursController extends Controller
         
         Fournisseurs::create($data);
 
-        return to_route('fournisseurs.index')
+        return to_route('/fournisseurs')
             ->with('success', 'Fournisseur a ete cree');
     }
 
@@ -90,7 +90,7 @@ class FournisseursController extends Controller
         $livraisons = Livraison::query()->orderBy('name', 'asc')->get();
         $bon_livraisons = BL::query()->orderBy('bl','asc')->get();
 
-        return inertia("Article/Modifier", [
+        return inertia("Fournisseurs/Modifier", [
             'fournisseur' => new FournisseursResource($fournisseurs),
             'marches' => MarcheResource::collection($commande),
             'livraisons' => LivraisonResource::collection($livraisons),

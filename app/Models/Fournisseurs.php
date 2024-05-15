@@ -4,34 +4,39 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Fournisseurs extends Model
 {
     use HasFactory;
+
+    protected $table = 'fournisseurs';
 
     protected $fillable = [
         'name',
         'coordonnees',
         'num',
         'email',
-        'marche',
-        'bon_livraison',
-        'livraison',
+        'marche_id',
+        'bon_livraison_id',
+        'livraison_id',
         'date_creation',
     ];
 
-    public function  bonlivraison() {
+    public function  bonlivraison(): HasMany
+     {
          return $this->hasMany( BL::class );
     }
 
-    public function livraison()
+    public function livraison(): HasMany
     {
-        return $this->belongsTo(Livraison::class);
+        return $this->hasMany(Livraison::class);
     }
 
-    public function marche()
+    public function marche(): HasOne
     {
-        return $this->belongsTo(BonCom::class);
+        return $this->hasOne(Marche::class);
     }
 
     

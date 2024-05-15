@@ -11,17 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('_livraison', function (Blueprint $table) {
-            $table->id();
-            $table->integer('quantite');
-            $table->integer('retard');
-            $table->foreignId('commande')->constrained('marche');
-            $table->foreignId('garantie')->constrained('garantie');
-            $table->foreignId('fournisseur')->constrained('fournisseur');
+        Schema::table('marche', function (Blueprint $table) {
             $table->foreignId('article')->constrained('articles');
+            $table->foreignId('mouvementstock')->constrained('mouvement_stock');
             $table->foreignId('bon_livraison')->constrained('bon_livraison');
-            $table->timestamp('date');
-            $table->timestamps();
+
         });
     }
 
@@ -30,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('_livraison');
+        Schema::table('marche', function (Blueprint $table) {
+            //
+        });
     }
 };

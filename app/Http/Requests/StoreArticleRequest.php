@@ -11,7 +11,7 @@ class StoreArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,18 @@ class StoreArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" => ["required","string","max:255"],
+            "designiation" => ["required","string"],
+            "prix" => ["required", "integer"],
+            "image_path"=>["string"],
+            "seuil"=>["required","integer"],
+            "assigned_fournisseur_id" => ["required","exists:fournisseurs,id"],
+            "categorie_id" =>["required","exists:categorie,id"],
+            "garantie" => ["required","exists:garantie,id"],
+            "codebarre" => ["exists:garnatie,id"],
+            "mouvementstock_id" => ["required","exists:mouvement_stock,id"],
+            "marche_id" => ["required","exists:marche,id"],
+            "demande_article_id"=> ["required","exists:demande_article,id"]
         ];
     }
 }

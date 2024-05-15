@@ -11,19 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('_mouvement_stock', function (Blueprint $table) {
+        Schema::create('mouvement_stock', function (Blueprint $table) {
             $table->id();
             $table->string('type');
-            $table->string('quantite');
+            $table->integer('quantite');
             $table->timestamp('date');
             $table->string('reference');
             $table->integer('total');
-            $table->foreignId('article_mouvementstok')->constrained('article_mouvementstock');
-            $table->foreignId('fournit')->constrained('fournisseurs');
-            $table->foreignId('destination')->constrained('destination');
-            $table->foreignId('bl')->constrained('bon_livraison');
-            $table->foreignId('bon_sortie')->constrained('bon_sortie');
-            $table->foreignId('user')->constrained('users');
             $table->timestamps();
         });
     }

@@ -26,11 +26,8 @@ class StoreAdminRequest extends FormRequest
             "name" => ["required","string","max:255"],
             "email" => ["required","string","email","unique:users,email"],
             "usertype" => ["required", "string", "max:255"],
-            "password" => [
-                "required",
-                "confirmed",
-                Password::min(8)->letters()->symbols(),
-            ],
+            "password" => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]+$/'],
+            "destination"=> ["required","exists:destination,id"]
         ];
     }
 }

@@ -18,9 +18,12 @@ class BLFactory extends Factory
     {
         return [
             'bl' => fake()->sentence(),
-            'Boncomm' => fake()->realText(),
-            'MouvementStock' => fake()->randomElement(['sortie']),
-            'dateLivraison' => fake()->dateTimeBetween('now', '+1 year'),
+            'quantitelivre' => fake()->random_int(20,500),
+            'MouvementStock' => fake()->randomElement(['sortie','entree']),
+            'commande' => fake()->random_int(1,50),
+            'fournit_par' => fake()->random_int(1,50),
+            'commande' => fake()->random_int(1,50),
+            'livraison' => fake()->random_int(1,50),
         ];
     }
 }

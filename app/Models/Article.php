@@ -8,21 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     use HasFactory;
+
+    protected $table = 'articles';
     
     protected $fillable = [
         'name',
-        'description',
+        'designiation',
         'image_path',
-        'status',
-        'priority',
-        'due_date',
-        'assigned_fournisseur_id',
-        'mouvementstock_id',
+        'prix',
+        'seuil',
+        "mouvementstock_id",
+        "assigned_fournisseur_id"
     ];
 
     public function mouvementstock()
     {
-        return $this->belongsTo(MouvementStock::class);
+        return $this->hasMany(MouvementStock::class);
     }
 
     public function assignedFournisseurs()

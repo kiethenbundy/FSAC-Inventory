@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Marche;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,15 +17,14 @@ class FournisseursResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id(),
+            'id' => $this->id,
             'name' => $this->name,
             'coordonnees' => $this->coordonnees,
             'num' => $this->num,
             'email' => $this->email,
-            'marche' => new MarcheResource($this->marche),
-            'bon_livraison' => new BLResource($this->bon_livraison),
-            'livraison' => new LivraisonResource($this->livraison),
-            'date_creation' => (new Carbon($this->date_creation))->format('d-m-Y'),
+            "marche_id" => new MarcheResource($this->marche_id),
+            "livraison_id" => new LivraisonResource($this->livraison_id),
+            "bon_livraison_id" => new BLResource($this->bon_livraison_id),
         ];
     }
 }

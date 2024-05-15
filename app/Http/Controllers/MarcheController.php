@@ -23,7 +23,7 @@ class MarcheController extends Controller
     {
         $query = Marche::query();
 
-        $sortField = request("sort_field", 'created_at');
+        $sortField = request("sort_field", 'id');
         $sortDirection = request("sort_direction", "desc");
 
         if (request("reference")) {
@@ -33,12 +33,12 @@ class MarcheController extends Controller
             $query->where("status", request("status"));
         }
 
-        $marches = $query->orderBy($sortField, $sortDirection)
+        $marche = $query->orderBy($sortField, $sortDirection)
             ->paginate(10)
             ->onEachSide(1);
 
-        return inertia("Marche/Index", [
-            "marches" => MarcheResource::collection($marches),
+        return inertia("Marche/Index2", [
+            "marches" => MarcheResource::collection($marche),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
         ]);
@@ -49,12 +49,12 @@ class MarcheController extends Controller
      */
     public function create()
     {
-        $mouvementstocks = MouvementStock::query()->orderBy('name', 'asc')->get();
+        $mouvementstocks = MouvementStock::query()->orderBy('type', 'asc')->get();
         $articles = Article::query()->orderBy('name', 'asc')->get();
-        $destination = Destination::query()->orderBy('name', 'asc')->get();
+        $destination = Destination::query()->orderBy('created_at', 'asc')->get();
 
 
-        return inertia("Marche/Creer", [
+        return inertia("Marche/Creer2", [
             'mouvementstocks' => MouvementStockResource::collection($mouvementstocks),
             'articles' => ArticleResource::collection($articles),
             'destinations' => DestinationResource::collection($destination),
@@ -69,10 +69,9 @@ class MarcheController extends Controller
         $data = $request->validated();
 
         
-        Marche::create($data);
+        $marche = Marche::create($data);
 
-        return to_route('marche.index')
-            ->with('success', 'Marche a ete Cree');
+        return inertia('Marche/Index2');
     }
 
     /**

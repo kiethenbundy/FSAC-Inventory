@@ -11,7 +11,7 @@ class UpdateMouvementStockRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class UpdateMouvementStockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "type" => ["required","string","max:10"],
+            "quantite" => ["required","integer"],
+            "date"=> ["required","date"],
+            "reference" => ["required","string","max:255"],
+            "total" => ["required","integer"],
+            "article_id" => ["required","exists:articles,id"],
+            "fournit" => ["required","exists:destination,id"],
+            "destination_id" => ["required","exists:destination,id"],
+            "bon_livraison_id" => ["required","exists:bon_livraison,id"],
+            "bon_sortie_id" => ["required","exists:bon_sortie,id"],
+            "user_id" => ["required","exists:users,id"],
         ];
     }
 }

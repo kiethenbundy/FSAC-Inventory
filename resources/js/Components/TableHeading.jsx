@@ -1,4 +1,6 @@
-import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/16/solid";
+
+import { UploadIcon } from "lucide-react";
+
 
 export default function TableHeading({
   name,
@@ -14,22 +16,7 @@ export default function TableHeading({
         {children}
         {sortable && (
           <div>
-            <ChevronUpIcon
-              className={
-                "w-4 " +
-                (sort_field === name && sort_direction === "asc"
-                  ? "text-white"
-                  : "")
-              }
-            />
-            <ChevronDownIcon
-              className={
-                "w-4 -mt-2 " +
-                (sort_field === name && sort_direction === "desc"
-                  ? "text-white"
-                  : "")
-              }
-            />
+            <UploadIcon />
           </div>
         )}
       </div>

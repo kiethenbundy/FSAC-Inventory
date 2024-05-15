@@ -14,5 +14,6 @@ class Admin extends Model
         'email',
         'usertype',
         'password',
+        'destination',
     ];
 }

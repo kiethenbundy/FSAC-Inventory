@@ -16,15 +16,15 @@ class MarcheResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-        'id' => $this->id(),
+        'id' => $this->id,
         'reference' => $this->reference,
         'titre' => $this->titre,
         'status' => $this->status,
         'num_lot' => $this->num_lot,
         'quantite' => $this->quantite,
-        'destination' => new DestinationResource($this->destination),
-        'article' => new ArticleResource($this->article),
-        'mouvementstock' => new MouvementStockResource($this->mouvementstock),
+        'destination_id' => new DestinationResource($this->destination_id),
+        'article_id' => new ArticleResource($this->article_id),
+        'mouvementstock_id' => new MouvementStockResource($this->mouvementstock_id),
         'date' => (new Carbon($this->date))->format('d-m-Y'),
     ];
     

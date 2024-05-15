@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Demande;
 use App\Models\MouvementStock;
 use Illuminate\Http\Request;
 
@@ -12,29 +13,28 @@ class DashboardController extends Controller
 
         $user = auth()->user();
 
-        $nonlivre = MouvementStock::query()
-        ->where('status','non_livre')
-        ->where('assigned_user_id',$user->id)
+        $nonlivre = Demande::query()
+        ->where('status','nonlivre')
+        ->where('user_id',$user->id)
         ->count();
 
-        $encours = MouvementStock::query()
-        ->where('status','en_cours')
-        ->where('assigned_user_id',$user->id)
+        $encours = Demande::query()
+        ->where('status','encours')
+        ->where('user_id',$user->id)
         ->count();
 
-        $livre = MouvementStock::query()
+        $livre = Demande::query()
         ->where('status','livre')
-        ->where('assigned_user_id',$user->id)
+        ->where('user_id',$user->id)
         ->count();
 
-        $mesmouvementstocks = MouvementStock::query()
-        ->where('status','livre')
-        ->where('assigned_user_id',$user->id)
+        $mesmouvementstocks = Demande::query()
+        ->where('user_id',$user->id)
         ->where('type','sortie');
 
-        $query = MouvementStock::query()
+        $query = Demande::query()
         ->where('status','livre')
-        ->where('assigned_user_id',$user->id)
+        ->where('user_id',$user->id)
         ->where('type','sortie');
 
 

@@ -6,8 +6,9 @@ import TableHeading from "@/Components/TableHeading";
 import { useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth, marches, queryParams = null, success }) {
+export default function Index({ auth, marche, queryParams = null, success }) {
   queryParams = queryParams || {}; 
 
   const searchFieldChanged = (name, value) => {
@@ -63,11 +64,11 @@ return <ToastContainer />;
     router.get(route("marche.index"), queryParams);
   };
 
-  const deleteMarche = (marches) => {
+  const deleteMarche = (marche) => {
     if (!window.confirm("Etes vous sur de vouloir supprimer ce marche?")) {
       return;
     }
-    router.delete(route("marche.destroy", marches.id));
+    router.delete(route("marche.destroy", marche.id));
   };
 
   return (
@@ -195,7 +196,7 @@ return <ToastContainer />;
                     </tr>
                   </thead>
                   <tbody>
-                    {marches.data.map((marche) => (
+                    {marche.data.map((marche) => (
                       <tr
                         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                         key={marche.id}
@@ -245,7 +246,7 @@ return <ToastContainer />;
                   </tbody>
                 </table>
               </div>
-              <Pagination links={marches.meta.links} />
+              <Pagination links={marche.meta.links} />
             </div>
           </div>
         </div>

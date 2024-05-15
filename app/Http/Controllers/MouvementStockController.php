@@ -6,7 +6,14 @@ use App\Models\MouvementStock;
 use App\Http\Requests\StoreMouvementStockRequest;
 use App\Http\Requests\UpdateMouvementStockRequest;
 use App\Http\Resources\ArticleResource;
+use App\Http\Resources\BLResource;
+use App\Http\Resources\BonSortieResource;
+use App\Http\Resources\FournisseursResource;
 use App\Http\Resources\MouvementStockResource;
+use App\Models\Article;
+use App\Models\BL;
+use App\Models\BonSortie;
+use App\Models\Fournisseurs;
 
 class MouvementStockController extends Controller
 {
@@ -15,25 +22,12 @@ class MouvementStockController extends Controller
      */
     public function index()
     {
-        $query = MouvementStock::query();
+        
 
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
+        $mouvementstocks = MouvementStock::all();
 
-        if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
-        }
-        if (request("status")) {
-            $query->where("status", request("status"));
-        }
-
-        $mouvementstocks = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
-            ->onEachSide(1);
-
-        return inertia("MouvementStock/Index", [
-            "projects" => MouvementStockResource::collection($mouvementstocks),
-            'queryParams' => request()->query() ?: null,
+        return inertia("MouvementStock/Index2", [
+            "mouvementstocks" => MouvementStockResource::collection($mouvementstocks),
             'success' => session('success'),
         ]);
     }
@@ -43,7 +37,16 @@ class MouvementStockController extends Controller
      */
     public function create()
     {
-        return inertia("MouvementStock/Creer");
+        $articles= Article::all();
+        $fournisseurs = Fournisseurs::all();
+        $bon_livraisons = BL::all();
+        $bon_sorties= BonSortie::all();
+
+        return inertia("MouvementStock/Creer3", compact('articles',
+        'fournisseurs',
+        'bon_livraisons',
+        'bon_sorties')
+    );
     }
 
     /**
@@ -51,14 +54,20 @@ class MouvementStockController extends Controller
      */
     public function store(StoreMouvementStockRequest $request)
     {
-        
-        
-        $data = $request->validated();
-        
-        MouvementStock::create($data);
+        //dd($request->all());
 
-        return to_route('mouvementstock.index')
-            ->with('success', 'MouvementStock was created');
+        $data = $request->validated();
+
+        $mouvementstock = MouvementStock::create($data);
+
+        foreach ($request->article as $art) {
+
+            $mouvementstock->articles()->attach($art['id']);
+        }
+
+        return to_route('/mouvementstock')
+            ->with('success', "MouvementStock a ete cree");
+        
     }
 
     /**
@@ -68,23 +77,9 @@ class MouvementStockController extends Controller
     {
         $query = $mouvementstock->articles();
 
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
-
-        if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
-        }
-        if (request("status")) {
-            $query->where("status", request("status"));
-        }
-
-        $articles = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
-            ->onEachSide(1);
         return inertia('MouvementStock/Afficher', [
             'mouvementstock' => new MouvementStockResource($mouvementstock),
-            "articles" => ArticleResource::collection($articles),
-            'queryParams' => request()->query() ?: null,
+            "articles" => ArticleResource::collection($query),
             'success' => session('success'),
         ]);
     }
@@ -94,8 +89,11 @@ class MouvementStockController extends Controller
      */
     public function edit(MouvementStock $mouvementstock)
     {
+        $Modifier = true;
+
         return inertia('MouvementStock/Modifier', [
             'mouvementstock' => new MouvementStockResource ($mouvementstock),
+            "Modifier",
         ]);
     }
 
@@ -105,8 +103,15 @@ class MouvementStockController extends Controller
     public function update(UpdateMouvementStockRequest $request, MouvementStock $mouvementstock)
     {
         $data = $request->validated();
+
+        foreach ($request->articles as $article) {
+
+            $mouvementstock->articles()->attach($article['id']);
+        }
+
         $mouvementstock->update($data);
-        return to_route('mouvementstock.index')
+
+        return to_route('/ms')
             ->with('success', "MouvementStock \"$mouvementstock->name\" was updated");
 
     }
@@ -118,7 +123,7 @@ class MouvementStockController extends Controller
     {
         $name = $mouvementstock->name;
         $mouvementstock->delete();
-        return to_route('mouvementstock.index')
+        return to_route('/ms')
             ->with('success', "MouvementStock \"$name\" was deleted");
     }
 }

@@ -19,12 +19,16 @@ class MouvementStockResource extends JsonResource
         return [
             'id' => $this->id,
             'type' => $this->type,
-            'name' => $this->name,
-            'description' => $this->description,
-            'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
-            'due_date' => (new Carbon($this->due_date))->format('Y-m-d'),
-            'status' => $this->status,
-            'image_path' => $this->image_path && !(str_starts_with($this->image_path, 'http')) ?
-                Storage::url($this->image_path) : $this->image_path,
+            'quantite' => $this->quantite,
+            'reference' => $this->reference,
+            'total' => $this->total,
+            'date' => (new Carbon($this->date))->format('Y-m-d'),
+            "article_id" => new ArticleResource($this->article_id),
+            "fournit" => new FournisseursResource($this->fourit),
+            "destination_id" => new DestinationResource($this->destination_id),
+            "bon_livraison_id" => new BLResource($this->bon_livraison_id),
+            "bon_sortie_id" => new BonSortieResource($this->bon_sorie_id),
+        
         ];    }
+
 }

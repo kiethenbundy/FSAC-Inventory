@@ -219,7 +219,7 @@ export default function Index({ auth, fournisseurs, queryParams = null, success 
                   </tbody>
                 </table>
               </div>
-              <Pagination links={mouvementstock.meta.links} />
+              <Pagination links={fournisseurs.meta.links} />
             </div>
           </div>
         </div>

@@ -33,5 +33,6 @@ class Magasinier
         if( $user->usertype === 'admin' ) {
             return redirect('/admin/dashboard');
         }
+        abort(403, 'Unauthorized action.');
     }
 }

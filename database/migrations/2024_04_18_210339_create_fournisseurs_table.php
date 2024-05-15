@@ -17,9 +17,7 @@ return new class extends Migration
             $table->longText('coordonnees');
             $table->string('num')->unique();
             $table->string('email')->unique()->nullable();
-            $table->foreignId('marche')->constrained('marche');
-            $table->foreignId('bon_livraison')->constrained('bon_livraison');
-            $table->foreignId('livraison')->constrained('livraison');
+            $table->foreignId('commande')->constrained('marche');
             $table->timestamp('date_creation')->nullable();
             $table->timestamps();
         });

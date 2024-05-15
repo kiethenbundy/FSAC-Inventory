@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('bl');
             $table->integer('quantitelivre');
             $table->foreignId('commande')->constrained('marche');
-            $table->foreignId('mouvementstock')->constrained('mouvementstock');
-            $table->foreignId('garantie')->constrained('garantie');
+            $table->foreignId('mouvementstock')->constrained('mouvement_stock');
             $table->foreignId('fournit_par')->constrained('fournisseurs');
             $table->foreignId('livraison')->constrained('livraison');
             $table->timestamps();

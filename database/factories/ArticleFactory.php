@@ -19,13 +19,10 @@ class ArticleFactory extends Factory
         return [
             'name' => fake()->sentence(),
             'description' => fake()->realText(),
-            'due_date' => fake()->dateTimeBetween('now', '+1 year'),
-            'status' => fake()
-                ->randomElement(['pending', 'in_progress', 'completed']),
-            'priority' => fake()
-                ->randomElement(['low', 'medium', 'high']),
             'image_path' => fake()->imageUrl(),
-            'assigned_fournisseur_id' => fake()->randomElement([1, 2]),
+            'prix' => fake()->random_int(3000,20000),
+            'seuil' => fake()->random_int(1,500),
+            'assigned_fournisseur_id' => fake()->random_int(1,50),
             'created_at' => time(),
             'updated_at' => time(),
         ];

@@ -25,7 +25,6 @@ export default function Creer({
 
         post(route("marche.store"));
     };
-
     return (
         <AuthenticatedLayout
             user={auth.user}

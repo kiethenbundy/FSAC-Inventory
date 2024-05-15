@@ -26,9 +26,9 @@ class StoreFournisseursRequest extends FormRequest
             "coordonnees" => ['nullable', 'string'],
             "num" => ["required","string","max:255","unique:fournisseurs,num"],
             "email" => ["required","string","email","unique:fournisseurs,email"],
-            'marche' => ['required', 'exists:marche,reference'],
-            'livraison' => ['required'],
-            'bon_livraison' => ['required', 'exists:bon_livraison,bl'],
+            'marche_id' => ['exists:marche,id'],
+            'livraison_id' => ['exists:livraison,id'],
+            'bon_livraison_id' => ['exists:bon_livraison,id'],
         ];
     }
 }

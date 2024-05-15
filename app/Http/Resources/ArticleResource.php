@@ -27,10 +27,8 @@ class ArticleResource extends JsonResource
             'priority' => $this->priority,
             'image_path' => $this->image_path && !(str_starts_with($this->image_path, 'http')) ?
                 Storage::url($this->image_path) : '',
-            'mouvementstock_id' => $this->mouvementstock_id,
-            'mouvementstock' => new MouvementStockResource($this->mouvementstock),
-            'assigned_fournisseur_id' => $this->assigned_fournisseur_id,
-            'assignedUser' => $this->assignedUser ? new UserResource($this->assignedUser) : null,
+            'mouvementstock_id' => new MouvementStockResource($this->mouvementstock),
+            'assigned_fournisseur_id' => new FournisseursResource($this->assigned_fournisseur_id),
       ];
     }
 }

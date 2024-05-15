@@ -11,7 +11,7 @@ class StoreBLRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreBLRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "bl" => ["required","string"],
+            "quantite" => ["required","integer"],
+            "marche_id" => ["required","exists:marche,id"],
+            "mouvement_stock_id" => ["required","exists:mouvement_stock,id"],
+            "fournit_par" => ["required","exists:fournisseurs,id"],
+            "livraison_id" => ["required","exists:livraison,id"],
         ];
     }
 }

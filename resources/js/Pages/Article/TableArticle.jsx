@@ -2,7 +2,7 @@ import Pagination from "@/Components/Pagination";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import TableHeading from "@/Components/TableHeading";
-import { ARTICLE_STATUS_CLASS_MAP, ARTICLE_STATUS_TEXT_MAP } from "@/constants.jsx";
+
 import { Link, router } from "@inertiajs/react";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -185,14 +185,8 @@ export default function TableArticle({
                   <Link href={route("article.show", article.id)}>{article.name}</Link>
                 </th>
                 <td className="px-3 py-2">
-                  <span
-                    className={
-                      "px-2 py-1 rounded text-nowrap text-white " +
-                      ARTICLE_STATUS_CLASS_MAP[article.status]
-                    }
-                  >
-                    {ARTICLE_STATUS_TEXT_MAP[article.status]}
-                  </span>
+                   
+        
                 </td>
                 <td className="px-3 py-2 text-nowrap">{article.created_at}</td>
                 <td className="px-3 py-2 text-nowrap">{article.due_date}</td>

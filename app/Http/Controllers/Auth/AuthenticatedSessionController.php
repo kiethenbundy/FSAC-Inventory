@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Login', [
+        return Inertia::render('Auth/Login2', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
         ]);
@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
 
         switch($user){
           case 'admin':
-            return redirect('/dashboard/admin');
+            return redirect('/dashboard');
             break;
         case 'chefservice':
             return redirect('/chefservice/dashboard');

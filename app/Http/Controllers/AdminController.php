@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use App\Http\Resources\DestinationResource;
 use App\Http\Resources\UserCrudResource;
 use App\Models\Article;
+use App\Models\Demande;
+use App\Models\Destination;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -24,19 +27,19 @@ class AdminController extends Controller
         $sortDirection = request("sort_direction", "desc");
 
 
-            if (request("name")) {
-                $query->where("name", "like", "%" . request("name") . "%");
-            }
-            if (request("email")) {
-                $query->where("email", "like", "%" . request("email") . "%");
-            }
-        
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request("email")) {
+            $query->where("email", "like", "%" . request("email") . "%");
+        }
+
 
         $users = $query->orderBy($sortField, $sortDirection)
             ->paginate(10)
             ->onEachSide(1);
 
-        return inertia("User/Index", [
+        return inertia("Admin/Index2", [
             "users" => UserCrudResource::collection($users),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
@@ -48,7 +51,11 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return inertia("Admin/Creer");
+        $destinations = Destination::all();
+
+        return inertia("Admin/Creer2", [
+            "destinations" => DestinationResource::collection($destinations),
+        ]);
     }
 
     /**
@@ -57,13 +64,27 @@ class AdminController extends Controller
     public function store(StoreAdminRequest $request)
     {
         $data = $request->validated();
-        $data['email_verified_at'] = time();
+
+        $destinationName = $data['destination'];
+
+        $destination = Destination::where("nom_dept", $destinationName)
+            ->first();
+
+        if (!$destination) {
+            return back()->withErrors(['destination' => 'Invalid destination']);
+        }
+
+        $data['destination'] = $destination->id;
+
+        $data['email_verified_at'] = now();
         $data['password'] = bcrypt($data['password']);
+
         User::create($data);
 
-        return to_route('admin.index')
-            ->with('success', 'Admin was created');
+        return redirect()->route('/user')
+            ->with('success', 'Utilisateur a été créé');
     }
+
 
     /**
      * Display the specified resource.
@@ -78,8 +99,11 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        return inertia('Admin/Modifier', [
+        $destinations = Destination::all();
+
+        return inertia('Admin/Index3', [
             'user' => new UserCrudResource($admin),
+            "destinations" => DestinationResource::collection($destinations),
         ]);
     }
 
@@ -97,38 +121,48 @@ class AdminController extends Controller
         }
         $user->update($data);
 
-        return to_route('admin.index')
+        return to_route('/user')
             ->with('success', "Admin\"$user->name\" was updated");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $userId)
     {
-        $name = $user->name;
-        $user->delete();
-        return to_route('admin.index')
-            ->with('success', "User \"$name\" was deleted");
+        $user = DB::table('users')->where('name', $userId)->first();
+
+        if ($user) {
+
+            $name = $user->name;
+            
+            DB::table('users')->where('name', $userId)->delete();
+
+            return response()->json(['message' => 'avec succes'], 500);
+        } else {
+            return back()->with('error', "User not found");
+        }
     }
-    public function markasCompleted (Demande $demande) {
 
-        DB::transaction( function() use ($demande) {
-           $demande->status = 'completed';
-           $demande->save();
+    public function markasCompleted(Demande $demande)
+    {
 
-           $articles = $demande->articles;
+        DB::transaction(function () use ($demande) {
+            $demande->status = 'completed';
+            $demande->save();
 
-           foreach( $articles as $article ){
-            $stock = Article::where('articles',$article->id)->first();
-            if($stock){
-                $stock->quantite -= $article->pivot->quantite;
-                $stock->save();
+            $articles = $demande->articles;
+
+            foreach ($articles as $article) {
+                $stock = Article::where('articles', $article->id)->first();
+                if ($stock) {
+                    $stock->quantite -= $article->pivot->quantite;
+                    $stock->save();
+                }
             }
-           }
         });
 
         return to_route('demande.index')
-            ->with('success', "Demande terminee et stock mise a jour"); 
+            ->with('success', "Demande terminee et stock mise a jour");
     }
 }

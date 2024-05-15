@@ -33,5 +33,6 @@ class ChefDept
         if( $user->usertype === 'magasinier' ) {
             return redirect('/magasinier/dashboard');
         }
+        abort(403, 'Unauthorized action.');
     }
 }

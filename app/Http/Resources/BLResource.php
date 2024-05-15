@@ -14,6 +14,14 @@ class BLResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "bl" => $this->bl,
+            "quantitelivre" => $this->quantitelivre,
+            "marche_id" => new MarcheResource($this->marche_id),
+            "mouvementstock_id" => new MouvementStockResource($this->mouvementstock_id),
+            "fournit_par" => new FournisseursResource($this->fournit_par),
+            "livraison_id" => new LivraisonResource($this->livraison_id),
+        ];
     }
 }

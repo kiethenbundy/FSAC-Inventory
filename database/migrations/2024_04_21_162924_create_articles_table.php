@@ -18,13 +18,6 @@ return new class extends Migration
             $table->integer('prix');
             $table->string('image_path')->nullable();
             $table->string('seuil');
-            $table->foreignId('assigned_fournisseur_id')->constrained('fournisseurs');
-            $table->foreignId('categorie')->constrained('categorie');
-            $table->foreignId('garantie')->constrained('garantie');
-            $table->foreignId('codebarre')->constrained('codebarre');
-            $table->foreignId('mouvementstock')->constrained('mouvementstock');
-            $table->foreignId('marche')->constrained('marche');
-            $table->foreignId('demande_article')->constrained('demande_article');
             $table->timestamps();
         });
     }

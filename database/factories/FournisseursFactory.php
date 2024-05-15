@@ -17,10 +17,13 @@ class FournisseursFactory extends Factory
     public function definition(): array
     {
         return [
-            'nom' => fake()->sentence(),
+            'name' => fake()->sentence(),
             'coordonnees' => fake()->realText(),
             'num' => fake()->numberBetween(0,99999999),
             'email' => fake()->sentence(),
+            'commande' => fake()->random_int(1,50),
+            'bon_livraison' => fake()->random_int(1,50),
+            'livraison' => fake()->random_int(1,50),
             'date_creation' => fake()->dateTimeBetween('now', '+1 year'),
         ];
     }

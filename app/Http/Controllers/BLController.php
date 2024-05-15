@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\BL;
 use App\Http\Requests\StoreBLRequest;
 use App\Http\Requests\UpdateBLRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class BLController extends Controller
 {
@@ -13,7 +16,9 @@ class BLController extends Controller
      */
     public function index()
     {
-        //
+        
+
+
     }
 
     /**
@@ -29,7 +34,7 @@ class BLController extends Controller
      */
     public function store(StoreBLRequest $request)
     {
-        //
+        
     }
 
     /**

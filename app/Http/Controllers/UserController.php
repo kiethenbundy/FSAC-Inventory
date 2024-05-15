@@ -30,7 +30,7 @@ class UserController extends Controller
             ->paginate(10)
             ->onEachSide(1);
 
-        return inertia("User/Index", [
+        return inertia("User/Index2", [
             "users" => UserCrudResource::collection($users),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
@@ -42,7 +42,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return inertia("User/Creer");
+        return inertia("User/Creer2");
     }
 
     /**
@@ -50,7 +50,13 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-       //
+        $data = $request->validated();
+        $data['email_verified_at'] = time();
+        $data['password'] = bcrypt($data['password']);
+        User::create($data);
+
+        return to_route('user.index')
+            ->with('success', 'Utilisateur cree avec succes');
     }
 
     /**
@@ -86,7 +92,7 @@ class UserController extends Controller
         $user->update($data);
 
         return to_route('user.index')
-            ->with('success', "User \"$user->name\" was updated");
+            ->with('success', "Utilisateur \"$user->name\" a ete modifie");
     }
 
     /**
@@ -97,6 +103,6 @@ class UserController extends Controller
         $name = $user->name;
         $user->delete();
         return to_route('user.index')
-            ->with('success', "User \"$name\" was deleted");
+            ->with('success', "Utilisateur \"$name\" a ete supprimee");
     }
 }

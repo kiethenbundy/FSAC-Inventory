@@ -4,12 +4,14 @@ import { Box } from '@mui/material';
 
 
 const Piechart = ( plusgrand) => {
-    const data = plusgrand.slice(0, 5).map((item) => ({
+    
+    const data = Object.values(plusgrand).slice(0, 5).map((item) => ({
         id: item.id,
         label: item.name,
         value: item.quantite,
         color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`
     }));
+    
     
   return (
     <Box sx= {{ height: "75vh"}}>
